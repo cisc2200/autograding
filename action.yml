@@ -1,0 +1,10 @@
+name: "Autograding"
+description: "Autograding for GitHub Classroom"
+author: "@zhhailon"
+inputs:
+  token:
+    default: ${{ github.token }}
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
