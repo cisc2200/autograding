@@ -27,7 +27,7 @@ def run_test(t, idx):
                             universal_newlines=True)
     try:
         to = int(t['timeout']) * 60
-        in = t['input'] if t['input'] != "" else None
+        in = None if t['input'] == "" else t['input']
         output, errs = proc.communicate(input=in, timeout=to)
     except subprocess.CalledProcessError as e:
         output = e.output
