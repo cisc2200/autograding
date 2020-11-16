@@ -10,6 +10,7 @@ from colorama import Fore, Back
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
+
 def read_json():
     with open('./tests/autograding.json') as f:
         return json.load(f)
@@ -19,16 +20,21 @@ def run_test(t, idx):
     print()
     print("=" * shutil.get_terminal_size().columns)
     print("📝 " + t['name'])
-    subprocess.call(t['setup'], shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
+    subprocess.call(t['setup'],
+                    shell=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.STDOUT)
+
     proc = subprocess.Popen(t['run'],
                             shell=True,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT,
                             universal_newlines=True)
     try:
-        timeo = int(t['timeout']) * 60
-        input = None if t['input'] == "" else t['input']
-        output, errs = proc.communicate(input=input, timeout=timeo)
+        timo = int(t['timeout']) * 60
+        inpt = None if t['input'] == "" else t['input']
+        output, errs = proc.communicate(input=inpt, timeout=timo)
     except subprocess.CalledProcessError as e:
         output = e.output
     except subprocess.TimeoutExpired:
@@ -46,15 +52,13 @@ def run_test(t, idx):
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
         print("Output:\t\t\"" + output + "\"")
-#         output_hex = ':'.join("{:02x}".format(ord(c)) for c in output)
-#         print("\t\t" + output_hex)
-
+        # output_hex = ':'.join("{:02x}".format(ord(c)) for c in output)
+        # print("\t\t" + output_hex)
         print("Expected:\t\"" + expected + "\"")
-#         expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
-#         print("\t\t" + expect_hex)
+        # expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
+        # print("\t\t" + expect_hex)
 
     return pts
-
 
 if __name__ == "__main__":
     tests = read_json()
@@ -67,9 +71,11 @@ if __name__ == "__main__":
         idx += 1
     print()
     print("*" * shutil.get_terminal_size().columns)
-    print(Back.CYAN + Fore.BLACK + "Points:\t" + "{:.1f}".format(total_pts) + "/" + "{:.1f}".format(available_pts) + Fore.RESET + Back.RESET)
-    
+    print(Back.CYAN + Fore.BLACK + "Points:\t" + "{:.1f}".format(total_pts) +
+          "/" + "{:.1f}".format(available_pts) + Fore.RESET + Back.RESET)
+
     if total_pts < available_pts:
         sys.exit(1)
+
     print("✨🌟💖💎🦄💎💖🌟✨🌟💖💎🦄💎💖🌟✨")
     sys.exit(0)
