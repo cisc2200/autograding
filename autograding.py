@@ -38,7 +38,7 @@ def run_test(t, idx):
         start = timer()
         output, errs = proc.communicate(input=inpt, timeout=timo)
         end = timer()
-        print("🕒Finished in {:.6f} seconds".format(end - start))
+        print("🕒 Finished in {:.5f} seconds".format(end - start))
     except subprocess.CalledProcessError as e:
         output = e.output
     except subprocess.TimeoutExpired:
