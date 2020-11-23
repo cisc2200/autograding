@@ -6,6 +6,7 @@ import os
 import sys
 import signal
 import shutil
+from timeit import default_timer as timer
 from colorama import Fore, Back
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -34,7 +35,10 @@ def run_test(t, idx):
     try:
         timo = int(t['timeout']) * 60
         inpt = None if t['input'] == "" else t['input']
+        start = timer()
         output, errs = proc.communicate(input=inpt, timeout=timo)
+        end = timer()
+        print("🕒Finished in {:.2f} seconds".format(end - start))
     except subprocess.CalledProcessError as e:
         output = e.output
     except subprocess.TimeoutExpired:
@@ -57,7 +61,6 @@ def run_test(t, idx):
         print("Expected:\t\"" + expected + "\"")
         # expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
         # print("\t\t" + expect_hex)
-
     return pts
 
 if __name__ == "__main__":
