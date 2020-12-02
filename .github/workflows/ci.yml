@@ -7,6 +7,14 @@ jobs:
     name: Autograding
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: cisc6597/autograding@main
-
+      - name: Checkout example lab
+        uses: actions/checkout@v2
+        with:
+          repository: cisc2200/example-lab
+      - name: Checkout example testcases
+        uses: actions/checkout@v2
+        with:
+          repository: cisc2200/example-tests
+          path: tests
+      - name: Run autograding
+        uses: cisc2200/autograding@main
