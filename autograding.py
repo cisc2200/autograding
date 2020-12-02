@@ -43,7 +43,7 @@ def run_test(t, idx):
         output = e.output
     except subprocess.TimeoutExpired:
         proc.kill()
-        output = "Timeout expired in " + to + " seconds"
+        output = "Timeout expired in " + timo + " seconds"
     except UnicodeDecodeError:
         output = "Output decode error"
 
