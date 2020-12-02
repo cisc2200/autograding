@@ -74,8 +74,8 @@ if __name__ == "__main__":
         idx += 1
     print()
     print("*" * shutil.get_terminal_size().columns)
-    print(Back.CYAN + Fore.BLACK + "Points:\t" + "{:.1f}".format(total_pts) +
-          "/" + "{:.1f}".format(available_pts) + Fore.RESET + Back.RESET)
+    print(Back.CYAN + Fore.BLACK + "Points:\t" + "{:.2f}".format(total_pts) +
+          "/" + "{:.2f}".format(available_pts) + Fore.RESET + Back.RESET)
 
     if total_pts < available_pts:
         sys.exit(1)
