@@ -23,9 +23,9 @@ def run_test(t, idx):
     print("📝 " + t['name'])
 
     subprocess.call(t['setup'],
-                    shell=True,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.STDOUT)
+                    shell=True)
+#                     stdout=subprocess.DEVNULL,
+#                     stderr=subprocess.STDOUT)
 
     proc = subprocess.Popen(t['run'],
                             shell=True,
