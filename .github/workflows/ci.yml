@@ -1,4 +1,4 @@
-name: CI
+name: Run example lab and tests
 
 on: [push]
 
