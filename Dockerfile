@@ -2,7 +2,7 @@ FROM alpine:3.12
 
 RUN apk update && \
     apk upgrade && \
-    apk add --no-cache py3-pip build-base
+    apk add --no-cache py3-pip build-base valgrind
 
 RUN pip3 install colorama
 

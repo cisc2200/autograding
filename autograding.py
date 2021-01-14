@@ -17,17 +17,8 @@ def read_json():
         return json.load(f)
 
 
-def run_test(t, idx):
-    print()
-    print("=" * shutil.get_terminal_size().columns)
-    print("📝 " + t['name'])
-
-    subprocess.call(t['setup'],
-                    shell=True)
-#                     stdout=subprocess.DEVNULL,
-#                     stderr=subprocess.STDOUT)
-
-    proc = subprocess.Popen(t['run'],
+def run(t, field='run'):
+    proc = subprocess.Popen(t[field],
                             shell=True,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT,
@@ -46,6 +37,20 @@ def run_test(t, idx):
         output = "Timeout expired in " + timo + " seconds"
     except UnicodeDecodeError:
         output = "Output decode error"
+    return output
+
+
+def run_test(t, idx):
+    print()
+    print("=" * shutil.get_terminal_size().columns)
+    print("📝 " + t['name'])
+
+    subprocess.call(t['setup'],
+                    shell=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.STDOUT)
+
+    output = run(t, 'valgrind')
 
     expected = t['output']
     pts = 0.0
@@ -55,13 +60,21 @@ def run_test(t, idx):
     else:
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
-        print("Output:\t\t\"" + output + "\"")
-        # output_hex = ':'.join("{:02x}".format(ord(c)) for c in output)
-        # print("\t\t" + output_hex)
-        print("Expected:\t\"" + expected + "\"")
-        # expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
-        # print("\t\t" + expect_hex)
+        if output.startswith(expected) and output[len(expected)] == '=':
+            print(Fore.MAGENTA +
+                  "Output is as expected, but there are memory leaks..." +
+                  Fore.RESET)
+            print(output[len(expected):])
+        else:
+            print(Fore.MAGENTA + "Output not as expected..." + Fore.RESET)
+            print("Output:\t \"" + output[:output.index('==')] + "\"")
+            # output_hex = ':'.join("{:02x}".format(ord(c)) for c in output)
+            # print("\t\t" + output_hex)
+            print("Expected: \"" + expected + "\"")
+            # expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
+            # print("\t\t" + expect_hex)
     return pts
+
 
 if __name__ == "__main__":
     tests = read_json()
