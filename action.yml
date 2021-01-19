@@ -4,6 +4,9 @@ author: "@zhhailon"
 inputs:
   token:
     default: ${{ github.token }}
+outputs:
+  points:
+    description: 'Final points'
 
 runs:
   using: 'docker'
