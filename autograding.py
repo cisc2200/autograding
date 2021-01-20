@@ -67,9 +67,10 @@ def run_test(t, idx):
             print(output[len(expected):])
         else:
             print(Fore.MAGENTA + "Output not as expected..." + Fore.RESET)
-            print("Output:\t \"" + output[:output.index('==')] + "\"")
-            # output_hex = ':'.join("{:02x}".format(ord(c)) for c in output)
-            # print("\t\t" + output_hex)
+            try:
+                print("Output:\t \"" + output[:output.index('==')] + "\"")
+            except:
+                print("Output:\t \"" + output + "\"")
             print("Expected: \"" + expected + "\"")
             # expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
             # print("\t\t" + expect_hex)
