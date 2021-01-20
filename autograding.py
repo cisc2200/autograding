@@ -49,8 +49,11 @@ def run_test(t, idx):
                     shell=True,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.STDOUT)
-
-    output = run(t, 'valgrind')
+    
+    if 'valgrind' in t:
+        output = run(t, 'valgrind')
+    else:
+        output = run(t)
 
     expected = t['output']
     pts = 0.0
