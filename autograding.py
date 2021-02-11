@@ -53,7 +53,8 @@ def run_test(t, idx):
     if not os.path.exists('./test.out'):
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
-        print(Fore.MAGENTA + "Compilation error...\nPlease make sure your code is runnable before committing..." + Fore.RESET)
+        print(Fore.MAGENTA + "Compilation error..." + Fore.RESET)
+        print(Fore.MAGENTA + "Please make sure your code is runnable before committing..." + Fore.RESET)
         return 0.0
     
     output = run(t, 'valgrind')
