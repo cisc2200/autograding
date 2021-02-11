@@ -50,6 +50,12 @@ def run_test(t, idx):
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.STDOUT)
     
+    if not os.path.exists('./test.out'):
+        print(Fore.RED + "❌ Fail" + Fore.RESET)
+        print()
+        print(Fore.MAGENTA + "Compilation error. Please make sure your code is runnable before commit." + Fore.RESET)
+        return 0.0
+    
     output = run(t, 'valgrind')
 
     expected = t['output']
