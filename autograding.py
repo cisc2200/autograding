@@ -45,7 +45,10 @@ def run_test(t, idx):
     print("=" * shutil.get_terminal_size().columns)
     print("📝 " + t['name'])
 
-    build_output = subprocess.check_output(t['setup'], shell=True)
+    try:
+        build_output = subprocess.check_output(t['setup'], shell=True)
+    except subprocess.CalledProcessError:
+        pass
 
 #     subprocess.call(t['setup'],
 #                     shell=True,
