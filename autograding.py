@@ -36,7 +36,7 @@ def run(t, field='run'):
         proc.kill()
         output = "Timeout expired in " + timo + " seconds"
     except UnicodeDecodeError:
-        output = "Output decode error"
+        output = "Output decoding error"
     return output
 
 
