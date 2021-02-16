@@ -45,12 +45,12 @@ def run_test(t, idx):
     print("=" * shutil.get_terminal_size().columns)
     print("📝 " + t['name'])
 
-#     subprocess.call(t['setup'], shell=True)
+    build_output = subprocess.check_output(t['setup'], shell=True)
 
-    subprocess.call(t['setup'],
-                    shell=True,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.STDOUT)
+#     subprocess.call(t['setup'],
+#                     shell=True,
+#                     stdout=subprocess.DEVNULL,
+#                     stderr=subprocess.STDOUT)
     
     if not os.path.exists('./test.out'):
         print(Fore.RED + "❌ Fail" + Fore.RESET)
