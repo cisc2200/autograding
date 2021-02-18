@@ -27,13 +27,11 @@ def run(t, field='run'):
         timo = int(t['timeout']) * 60
         inpt = None if t['input'] == "" else t['input']
         start = timer()
-        output, errs = proc.communicate(input=inpt, timeout=timo)
+        output, errs = proc.communicate(input=inpt, stderr=subprocess.STDOUT, timeout=timo)
         end = timer()
         print("🕒 Finished in {:.5f} seconds".format(end - start))
     except subprocess.CalledProcessError as e:
         output = e.output
-        output += "\n"
-        output += e.stderr
     except subprocess.TimeoutExpired:
         proc.kill()
         output = "Timeout expired in " + timo + " seconds"
