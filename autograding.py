@@ -21,7 +21,7 @@ def run(t, field='run'):
     proc = subprocess.Popen(t[field],
                             shell=True,
                             stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE,
+                            stderr=subprocess.STDOUT,
                             universal_newlines=True)
     try:
         timo = int(t['timeout']) * 60
@@ -30,10 +30,10 @@ def run(t, field='run'):
         output, errs = proc.communicate(input=inpt, timeout=timo)
         end = timer()
         print("🕒 Finished in {:.5f} seconds".format(end - start))
-    except subprocess.CalledProcessError as e:
-        output = e.output
-        output += "\n"
-        output += errs
+#     except subprocess.CalledProcessError as e:
+#         output = e.output
+#         output += "\n"
+#         output += errs
     except subprocess.TimeoutExpired:
         proc.kill()
         output = "Timeout expired in " + timo + " seconds"
@@ -59,8 +59,6 @@ def run_test(t, idx):
         print(Fore.MAGENTA + "Please look at the error messages below for details..." + Fore.RESET)
         print(e.output)
         return 0.0
-#         pass
-#     if not os.path.exists('./test.out'):
     
     output = run(t, 'valgrind')
 
@@ -79,10 +77,11 @@ def run_test(t, idx):
             print(output[len(expected):])
         else:
             print(Fore.MAGENTA + "Output not as expected..." + Fore.RESET)
-            try:
-                print("Output:   \"" + output[:output.index('==')] + "\"")
-            except:
-                print("Output:   \"" + output + "\"")
+#             try:
+#                 print("Output:   \"" + output[:output.index('==')] + "\"")
+#             except:
+#                 print("Output:   \"" + output + "\"")
+            print("Output:   \"" + output + "\"")
             print("Expected: \"" + expected + "\"")
             # expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
             # print("\t\t" + expect_hex)
