@@ -32,6 +32,8 @@ def run(t, field='run'):
         print("🕒 Finished in {:.5f} seconds".format(end - start))
     except subprocess.CalledProcessError as e:
         output = e.output
+        output += "\n"
+        output += e.stderr
     except subprocess.TimeoutExpired:
         proc.kill()
         output = "Timeout expired in " + timo + " seconds"
