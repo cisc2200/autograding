@@ -46,13 +46,14 @@ def run_test(t, idx):
     print("📝 " + t['name'])
 
     try:
-#         build_output = subprocess.check_output(t['setup'], shell=True)
-        build_output = subprocess.check_output(t['setup'], shell=True, stderr=subprocess.STDOUT)
+        build_output = subprocess.check_output(t['setup'],
+                                               shell=True,
+                                               universal_newlines=True)
     except subprocess.CalledProcessError as e:
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
         print(Fore.MAGENTA + "Compilation error..." + Fore.RESET)
-        print(Fore.MAGENTA + "Please look at the error messages below for more details..." + Fore.RESET)
+        print(Fore.MAGENTA + "Please look at the error messages below for details..." + Fore.RESET)
         print(e.output)
         return 0.0
 #         pass
