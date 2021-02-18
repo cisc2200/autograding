@@ -48,6 +48,7 @@ def run_test(t, idx):
     try:
         build_output = subprocess.check_output(t['setup'],
                                                shell=True,
+                                               stderr=subprocess.STDOUT,
                                                universal_newlines=True)
     except subprocess.CalledProcessError as e:
         print(Fore.RED + "❌ Fail" + Fore.RESET)
