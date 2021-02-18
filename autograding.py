@@ -31,10 +31,6 @@ def run(t, field='run'):
         output, errs = proc.communicate(input=inpt, timeout=timo)
         end = timer()
         print("🕒 Finished in {:.5f} seconds".format(end - start))
-#     except subprocess.CalledProcessError as e:
-#         output = e.output
-#         output += "\n"
-#         output += errs
     except subprocess.TimeoutExpired:
         proc.kill()
         output = errs = "Timeout expired in " + timo + " seconds"
@@ -57,7 +53,6 @@ def run_test(t, idx):
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
         print(Fore.MAGENTA + "Compilation error..." + Fore.RESET)
-#         print(Fore.MAGENTA + "Please look at the error messages below for details..." + Fore.RESET)
         print(e.output)
         return 0.0
     
@@ -72,7 +67,7 @@ def run_test(t, idx):
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
         if errs:
-            print(Fore.MAGENTA + "There are errors during execution..." + Fore.RESET)
+            print(Fore.MAGENTA + "Errors during execution..." + Fore.RESET)
             print(errs)
         else:
             print(Fore.MAGENTA + "Output not as expected..." + Fore.RESET)
