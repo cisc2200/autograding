@@ -45,20 +45,18 @@ def run_test(t, idx):
     print("=" * shutil.get_terminal_size().columns)
     print("📝 " + t['name'])
 
-#     try:
+    try:
 #         build_output = subprocess.check_output(t['setup'], shell=True)
-#     except subprocess.CalledProcessError:
-#         pass
-
-    build_output = subprocess.check_output(t['setup'], shell=True, stderr=subprocess.STDOUT)
-    
-    if not os.path.exists('./test.out'):
+        build_output = subprocess.check_output(t['setup'], shell=True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
         print(Fore.MAGENTA + "Compilation error..." + Fore.RESET)
         print(Fore.MAGENTA + "Please look at the error messages below for more details..." + Fore.RESET)
-        print(build_output)
+        print(e.output)
         return 0.0
+#         pass
+#     if not os.path.exists('./test.out'):
     
     output = run(t, 'valgrind')
 
