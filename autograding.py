@@ -6,6 +6,7 @@ import os
 import sys
 import signal
 import shutil
+import re
 from timeit import default_timer as timer
 from colorama import Fore, Back
 
@@ -21,7 +22,7 @@ def run(t, field='run'):
     proc = subprocess.Popen(t[field],
                             shell=True,
                             stdout=subprocess.PIPE,
-                            stderr=subprocess.STDOUT,
+                            stderr=subprocess.PIPE,
                             universal_newlines=True)
     try:
         timo = int(t['timeout']) * 60
@@ -36,10 +37,10 @@ def run(t, field='run'):
 #         output += errs
     except subprocess.TimeoutExpired:
         proc.kill()
-        output = "Timeout expired in " + timo + " seconds"
+        output = errs = "Timeout expired in " + timo + " seconds"
     except UnicodeDecodeError:
-        output = "Output decoding error"
-    return output
+        output = errs = "Output decoding error. Typically this is caused by incorrect initialization..."
+    return output, errs
 
 
 def run_test(t, idx):
@@ -56,31 +57,25 @@ def run_test(t, idx):
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
         print(Fore.MAGENTA + "Compilation error..." + Fore.RESET)
-        print(Fore.MAGENTA + "Please look at the error messages below for details..." + Fore.RESET)
+#         print(Fore.MAGENTA + "Please look at the error messages below for details..." + Fore.RESET)
         print(e.output)
         return 0.0
     
-    output = run(t, 'valgrind')
+    output, errs = run(t, 'valgrind')
 
     expected = t['output']
     pts = 0.0
-    if output == expected:
+    if output == expected and not errs:
         print(Fore.GREEN + "✅ Pass" + Fore.RESET)
         pts = float(t['points'])
     else:
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
-        if output.startswith(expected) and output[len(expected)] == '=':
-            print(Fore.MAGENTA +
-                  "Output is as expected, but there are memory leaks..." +
-                  Fore.RESET)
-            print(output[len(expected):])
+        if errs:
+            print(Fore.MAGENTA + "There are errors during execution..." + Fore.RESET)
+            print(errs)
         else:
             print(Fore.MAGENTA + "Output not as expected..." + Fore.RESET)
-#             try:
-#                 print("Output:   \"" + output[:output.index('==')] + "\"")
-#             except:
-#                 print("Output:   \"" + output + "\"")
             print("Output:   \"" + output + "\"")
             print("Expected: \"" + expected + "\"")
             # expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
