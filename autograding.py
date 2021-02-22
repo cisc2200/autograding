@@ -68,6 +68,7 @@ def run_test(t, idx):
         print()
         if errs:
             print(Fore.MAGENTA + "Errors during execution..." + Fore.RESET)
+            print(output)
             print(errs)
         else:
             print(Fore.MAGENTA + "Output not as expected..." + Fore.RESET)
