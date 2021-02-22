@@ -33,9 +33,11 @@ def run(t, field='run'):
         print("🕒 Finished in {:.5f} seconds".format(end - start))
     except subprocess.TimeoutExpired:
         proc.kill()
+        output = ""
         errs = "Timeout expired in " + timo + " seconds"
     except UnicodeDecodeError:
         proc.kill()
+        output = ""
         errs = "Output decoding error. Typically this is caused by incorrect initialization..."
     return output, errs
 
