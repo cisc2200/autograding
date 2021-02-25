@@ -34,7 +34,7 @@ def run(t, field='run'):
     except subprocess.TimeoutExpired:
         proc.kill()
         output = ""
-        errs = "Timeout expired in " + timo + " seconds"
+        errs = "Timeout expired in " + str(timo) + " seconds"
     except UnicodeDecodeError:
         proc.kill()
         output = ""
