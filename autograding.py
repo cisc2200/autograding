@@ -70,7 +70,11 @@ def run_test(t, idx):
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
         if errs:
-            print(Fore.MAGENTA + "Errors during execution..." + Fore.RESET)
+            if output == expected:
+                print(Fore.MAGENTA + "Output as expected, but errors during execution..." + Fore.RESET)
+                pts = float(t['points']) / 2
+            else:
+                print(Fore.MAGENTA + "Errors during execution..." + Fore.RESET)
             print(output)
             print(errs)
         else:
