@@ -71,11 +71,13 @@ def run_test(t, idx):
         print()
         if errs:
             if output == expected:
-                print(Fore.MAGENTA + "Output as expected, but errors during execution..." + Fore.RESET)
+                print(Fore.MAGENTA + "Output as expected, but error(s) during execution..." + Fore.RESET)
                 pts = float(t['points']) / 2
             else:
-                print(Fore.MAGENTA + "Errors during execution..." + Fore.RESET)
-            print(output)
+                print(Fore.MAGENTA + "Error(s) during execution..." + Fore.RESET)
+            print("Output: \"" + output + "\"")
+            print()
+            print("Error(s):")
             print(errs)
         else:
             print(Fore.MAGENTA + "Output not as expected..." + Fore.RESET)
