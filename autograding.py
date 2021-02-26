@@ -75,7 +75,8 @@ def run_test(t, idx):
                 pts = float(t['points']) / 2
             else:
                 print(Fore.MAGENTA + "Error(s) during execution..." + Fore.RESET)
-            print("Output: \"" + output + "\"")
+            print("Output:   \"" + output + "\"")
+            print("Expected: \"" + expected + "\"")
             print("Error(s):")
             print(errs)
         else:
