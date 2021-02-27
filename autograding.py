@@ -42,6 +42,16 @@ def run(t, field='run'):
     return output, errs
 
 
+def partial_points(t, output):
+    pts = 0
+    parts = t['partial']
+    pts_per_part = float(t['points']) / len(parts)
+    for p in parts:
+        if p in output:
+            pts += pts_per_part
+    return pts
+
+
 def run_test(t, idx):
     print()
     print("=" * shutil.get_terminal_size().columns)
@@ -58,7 +68,7 @@ def run_test(t, idx):
         print(Fore.MAGENTA + "Compilation error..." + Fore.RESET)
         print(e.output)
         return 0.0
-    
+
     output, errs = run(t, 'valgrind')
 
     expected = t['output']
@@ -71,20 +81,25 @@ def run_test(t, idx):
         print()
         if errs:
             if output == expected:
-                print(Fore.MAGENTA + "Output as expected, but error(s) during execution..." + Fore.RESET)
-                pts = float(t['points']) / 2
-            else:
-                print(Fore.MAGENTA + "Error(s) during execution..." + Fore.RESET)
+                pts = float(t['points'])
+            elif 'partial' in t:
+                pts = partial_points(t, output)
+            pts /= 2
+            print(Fore.MAGENTA + "Error(s) during execution..." + Fore.RESET)
             print("Output:   '" + output + "'")
             print("Expected: '" + expected + "'")
             print("Error(s):")
             print(errs)
         else:
+            if 'partial' in t:
+                pts = partial_points(t, output)
             print(Fore.MAGENTA + "Output not as expected..." + Fore.RESET)
             print("Output:   '" + output + "'")
             print("Expected: '" + expected + "'")
             # expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
             # print("\t\t" + expect_hex)
+    print()
+    print("🎯 " + Fore.YELLOW + "Points: " + "{:.2f}".format(pts) + Fore.RESET)
     return pts
 
 
@@ -100,7 +115,7 @@ if __name__ == "__main__":
     print()
     print("*" * shutil.get_terminal_size().columns)
     points = "{:.2f}".format(total_pts) + "/" + "{:.2f}".format(available_pts)
-    print(Back.CYAN + Fore.BLACK + "Points:\t" + points + Fore.RESET +
+    print(Back.CYAN + Fore.BLACK + "Total Points:\t" + points + Fore.RESET +
           Back.RESET)
 
     with open('points', 'w') as f:
