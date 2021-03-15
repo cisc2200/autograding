@@ -7,6 +7,8 @@ import sys
 import signal
 import shutil
 import re
+import pytz
+from datetime import datetime
 from timeit import default_timer as timer
 from colorama import Fore, Back, Style
 
@@ -121,6 +123,14 @@ if __name__ == "__main__":
     points = "{:.2f}".format(total_pts) + "/" + "{:.2f}".format(available_pts)
     print(Back.CYAN + Fore.BLACK + "Total Points:\t" + points + Fore.RESET +
           Back.RESET)
+    
+    if 'bonus' in tests:
+        for b in tests['bonus']:
+            d = datetime.fromisoformat(b['date'])
+            p = float(b['points'])
+            nyc_datetime = datetime.now(pytz.timezone('US/Eastern'))
+            print("current time: " + str(nyc_datetime))
+            
 
     with open('points', 'w') as f:
         f.write(points)
