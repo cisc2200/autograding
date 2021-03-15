@@ -128,7 +128,7 @@ if __name__ == "__main__":
             p = float(b['points'])
             if current_datetime < d:
                 total_pts += p
-                print(Back.YELLOW + Fore.BLACK + "Bonus:\t" + str(p) + Fore.RESET + Back.RESET)
+                print("🎉 " + Fore.YELLOW + "Bonus:\t" + str(p) + Fore.RESET)
                 break
             
     points = "{:.2f}".format(total_pts) + "/" + "{:.2f}".format(available_pts)
