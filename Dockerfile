@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/vscode/devcontainers/cpp:focal
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install python3 python3-colorama
+    && apt-get -y install python3 python3-colorama python3-tz
 
 ENV CC=gcc
 ENV CXX=g++
