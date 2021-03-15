@@ -79,6 +79,10 @@ def run_test(t, idx):
     else:
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
+        if 'case' in t:
+            print("Input:")
+            print(t['case'])
+        print()
         if errs:
             if output == expected:
                 pts = float(t['points'])
