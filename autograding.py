@@ -117,10 +117,10 @@ if __name__ == "__main__":
     if 'bonus' in tests:
         for b in tests['bonus']:
             d = datetime.fromisoformat(b['date'])
-            p = float(b['points'])
-            print("bonus time: " + str(d) + ": " + str(p))
-            nyc_datetime = datetime.now(pytz.timezone('US/Eastern'))
-            print("current time: " + str(nyc_datetime))
+            current = datetime.now(pytz.timezone('US/Eastern'))
+            if current < d:
+                total_pts += float(b['points'])
+                break
     
     idx = 0
     for t in tests['tests']:
