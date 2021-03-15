@@ -8,7 +8,7 @@ import signal
 import shutil
 import re
 from timeit import default_timer as timer
-from colorama import Fore, Back
+from colorama import Fore, Back, Style
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -80,8 +80,8 @@ def run_test(t, idx):
         print(Fore.RED + "❌ Fail" + Fore.RESET)
         print()
         if 'case' in t:
-            print("Input:")
-            print(t['case'])
+            print(Style.BRIGHT + "Input:")
+            print(t['case'] + Style.RESET_ALL)
         print()
         if errs:
             if output == expected:
