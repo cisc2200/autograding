@@ -126,7 +126,7 @@ if __name__ == "__main__":
         for b in tests['bonus']:
             d = datetime.fromisoformat(b['date'])
             p = float(b['points'])
-            if current < d:
+            if current_datetime < d:
                 total_pts += p
                 print(Back.YELLOW + Fore.BLACK + "Bonus:\t" + str(p) + Fore.RESET + Back.RESET)
                 break
