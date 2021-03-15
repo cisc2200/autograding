@@ -129,6 +129,7 @@ if __name__ == "__main__":
             if current_datetime < d:
                 total_pts += p
                 print("🎉 " + Fore.YELLOW + "Bonus:\t" + str(p) + Fore.RESET)
+                print()
                 break
             
     points = "{:.2f}".format(total_pts) + "/" + "{:.2f}".format(available_pts)
