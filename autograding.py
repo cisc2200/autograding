@@ -113,6 +113,15 @@ if __name__ == "__main__":
     tests = read_json()
     total_pts = 0.0
     available_pts = 0.0
+    
+    if 'bonus' in tests:
+        for b in tests['bonus']:
+            d = datetime.fromisoformat(b['date'])
+            p = float(b['points'])
+            print("bonus time: " + str(d) + ": " + str(p))
+            nyc_datetime = datetime.now(pytz.timezone('US/Eastern'))
+            print("current time: " + str(nyc_datetime))
+    
     idx = 0
     for t in tests['tests']:
         total_pts += run_test(t, idx)
@@ -120,13 +129,6 @@ if __name__ == "__main__":
         idx += 1
     print()
     print("*" * shutil.get_terminal_size().columns)
-    
-    if 'bonus' in tests:
-        for b in tests['bonus']:
-            d = datetime.fromisoformat(b['date'])
-            p = float(b['points'])
-            nyc_datetime = datetime.now(pytz.timezone('US/Eastern'))
-            print("current time: " + str(nyc_datetime))
             
     points = "{:.2f}".format(total_pts) + "/" + "{:.2f}".format(available_pts)
     print(Back.CYAN + Fore.BLACK + "Total Points:\t" + points + Fore.RESET +
