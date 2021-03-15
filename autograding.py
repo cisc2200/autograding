@@ -110,10 +110,10 @@ def run_test(t, idx):
 
 
 if __name__ == "__main__":
+    current_datetime = datetime.now(pytz.timezone('US/Eastern'))
     tests = read_json()
     total_pts = 0.0
-    available_pts = 0.0
-    current_datetime = datetime.now(pytz.timezone('US/Eastern'))    
+    available_pts = 0.0 
     idx = 0
     for t in tests['tests']:
         total_pts += run_test(t, idx)
