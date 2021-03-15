@@ -81,8 +81,8 @@ def run_test(t, idx):
         print()
         if 'case' in t:
             print(Fore.CYAN + "Input:" + Fore.RESET)
-            print(Style.BRIGHT + Fore.WHITE + t['case'] + Fore.RESET + Style.RESET_ALL)
-        print()
+            print(Style.BRIGHT + Fore.WHITE + t['case'] + Fore.RESET)
+        print(Style.RESET_ALL)
         if errs:
             if output == expected:
                 pts = float(t['points'])
