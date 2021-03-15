@@ -3,7 +3,7 @@
 FILE=tests/prerun.sh
 if [ -f "$FILE" ]; then
   cd tests
-  sh tests/prerun.sh
+  sh prerun.sh
   cd ..
 else 
   mv tests/Makefile ./
