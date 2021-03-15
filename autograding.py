@@ -81,7 +81,7 @@ def run_test(t, idx):
         print()
         if 'case' in t:
             print(Fore.CYAN + "Input:" + Fore.RESET)
-            print(Style.Bright + Fore.WHITE + t['case'] + Fore.RESET + Style.RESET_ALL)
+            print(Style.BRIGHT + Fore.WHITE + t['case'] + Fore.RESET + Style.RESET_ALL)
         print()
         if errs:
             if output == expected:
