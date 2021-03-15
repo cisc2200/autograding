@@ -128,7 +128,7 @@ if __name__ == "__main__":
             p = float(b['points'])
             if current_datetime < d:
                 total_pts += p
-                print("🎉 " + Fore.YELLOW + "Bonus:\t" + str(p) + Fore.RESET)
+                print("🎊 " + Fore.YELLOW + "Bonus Points: " + str(p) + Fore.RESET)
                 print()
                 break
             
