@@ -120,9 +120,6 @@ if __name__ == "__main__":
         idx += 1
     print()
     print("*" * shutil.get_terminal_size().columns)
-    points = "{:.2f}".format(total_pts) + "/" + "{:.2f}".format(available_pts)
-    print(Back.CYAN + Fore.BLACK + "Total Points:\t" + points + Fore.RESET +
-          Back.RESET)
     
     if 'bonus' in tests:
         for b in tests['bonus']:
@@ -131,7 +128,10 @@ if __name__ == "__main__":
             nyc_datetime = datetime.now(pytz.timezone('US/Eastern'))
             print("current time: " + str(nyc_datetime))
             
-
+    points = "{:.2f}".format(total_pts) + "/" + "{:.2f}".format(available_pts)
+    print(Back.CYAN + Fore.BLACK + "Total Points:\t" + points + Fore.RESET +
+          Back.RESET)
+            
     with open('points', 'w') as f:
         f.write(points)
 
