@@ -27,7 +27,7 @@ def run(t, field='run'):
                             stderr=subprocess.PIPE,
                             universal_newlines=True)
     try:
-        timo = int(t['timeout']) * 60
+        timo = int(t['timeout'] * 60)
         inpt = None if t['input'] == "" else t['input']
         start = timer()
         output, errs = proc.communicate(input=inpt, timeout=timo)
