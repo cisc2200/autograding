@@ -102,8 +102,10 @@ def run_test(t, idx):
             if 'partial' in t:
                 pts = partial_points(t, output)
             print(Fore.MAGENTA + "Output not as expected..." + Fore.RESET)
-            print("Output:   '" + output + "'")
-            print("Expected: '" + expected + "'")
+            print("\nOutput:")
+            print("'" + output + "'")
+            print("\nExpected:")
+            print("'" + expected + "'")
             # expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
             # print("\t\t" + expect_hex)
     print()
