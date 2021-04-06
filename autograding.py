@@ -92,8 +92,12 @@ def run_test(t, idx):
                 pts = partial_points(t, output)
             pts /= 2
             print(Fore.MAGENTA + "Error(s) during execution..." + Fore.RESET)
-            print("Output:   '" + output + "'")
-            print("Expected: '" + expected + "'")
+            print()
+            print("Output:")
+            print("'" + output + "'")
+            print()
+            print("Expected:")
+            print("'" + expected + "'")
             print("Error(s):")
             print(errs)
         else:
