@@ -117,12 +117,12 @@ if __name__ == "__main__":
     current_datetime = datetime.now(pytz.timezone('US/Eastern'))
     github_sha = os.getenv("GITHUB_SHA")
     if github_sha:
-        commit_date = subprocess.check_output("git show -s --format=%ci {}".format(github_sha),
+        commit_date = subprocess.check_output("git show -s --format=%cd --date=iso-strict {}".format(github_sha),
                                                shell=True,
                                                stderr=subprocess.STDOUT,
                                                universal_newlines=True)
-#         commit_date = datetime.fromtimestamp(int(commit_date.strip()))
-        print(str(commit_date))
+        current_datetime = datetime.fromisoformat(commit_date.strip())
+
     tests = read_json()
     total_pts = 0.0
     available_pts = 0.0 
@@ -138,7 +138,7 @@ if __name__ == "__main__":
         for b in tests['bonus']:
             d = datetime.fromisoformat(b['date'])
             p = float(b['points'])
-            print("current time: " +str(current_datetime) + ", bonus time: " + str(d))
+            print("commit time: " +str(current_datetime) + ", bonus time: " + str(d))
             if current_datetime < d:
                 total_pts += p
                 print("🎊 " + Fore.YELLOW + "Bonus Points: " + str(p) + Fore.RESET)
