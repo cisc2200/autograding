@@ -138,7 +138,7 @@ if __name__ == "__main__":
         for b in tests['bonus']:
             d = datetime.fromisoformat(b['date'])
             p = float(b['points'])
-            print("commit time: " +str(current_datetime) + ", bonus time: " + str(d))
+#             print("commit time: " +str(current_datetime) + ", bonus time: " + str(d))
             if current_datetime < d:
                 total_pts += p
                 print("🎊 " + Fore.YELLOW + "Bonus Points: " + str(p) + Fore.RESET)
