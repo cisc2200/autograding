@@ -117,7 +117,7 @@ if __name__ == "__main__":
     current_datetime = datetime.now(pytz.timezone('US/Eastern'))
     github_sha = os.getenv("GITHUB_SHA")
     if github_sha:
-        commit_date = subprocess.check_output("git show -s --format=%ci %s" % github_sha,
+        commit_date = subprocess.check_output("git show -s --format=\%ci %s" % github_sha,
                                                shell=True,
                                                stderr=subprocess.STDOUT,
                                                universal_newlines=True)
