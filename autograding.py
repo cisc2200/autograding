@@ -121,7 +121,7 @@ if __name__ == "__main__":
                                                shell=True,
                                                stderr=subprocess.STDOUT,
                                                universal_newlines=True)
-        commit_date = datetime.fromtimestamp(commit_date.strip())
+        commit_date = datetime.fromtimestamp(int(commit_date.strip()))
         print(str(commit_date))
     tests = read_json()
     total_pts = 0.0
