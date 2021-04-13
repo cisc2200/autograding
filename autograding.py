@@ -10,7 +10,9 @@ import re
 import pytz
 from datetime import datetime
 from timeit import default_timer as timer
-from colorama import Fore, Back, Style
+from colorama import init, Fore, Back, Style
+
+init()
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -44,13 +46,28 @@ def run(t, field='run'):
     return output, errs
 
 
+def check_output_correctness(output, expected, comparison, include=False):
+    if comparison == 'exact':
+        if include:
+            return expected in output
+        return output == expected
+    if comparison == 'regex':
+        return re.search(expected, output) != None
+
+
 def partial_points(t, output):
+    expected = ""
     pts = 0
     parts = t['partial']
     pts_per_part = float(t['points']) / len(parts)
     for p in parts:
-        if p in output:
+        if check_output_correctness(output, p, t['comparison'], True):
             pts += pts_per_part
+            expected += Back.GREEN + Fore.BLACK + p
+        else:
+            expected += Back.RED + Fore.BLACK + p
+    print("\nExpected:")
+    print("'" + expected + "'" + Style.RESET_ALL)
     return pts
 
 
@@ -75,7 +92,9 @@ def run_test(t, idx):
 
     expected = t['output']
     pts = 0.0
-    if output == expected and not errs:
+
+    if check_output_correctness(output, expected,
+                                t['comparison']) and not errs:
         print(Fore.GREEN + "✅ Pass" + Fore.RESET)
         pts = float(t['points'])
     else:
@@ -86,7 +105,7 @@ def run_test(t, idx):
             print(t['case'])
         print()
         if errs:
-            if output == expected:
+            if check_output_correctness(output, expected, t['comparison']):
                 pts = float(t['points'])
             elif 'partial' in t:
                 pts = partial_points(t, output)
@@ -96,16 +115,25 @@ def run_test(t, idx):
             print("'" + output + "'")
             print("\nExpected:")
             print("'" + expected + "'")
+            if t['comparison'] == 'regex':
+                print(
+                    '(Refer to https://docs.python.org/3/library/re.html for regex matching of output. TL;DR: "\s+" and "\s*" denote spaces and "\+" denotes "+".)'
+                )
             print("\nError(s):")
             print(errs)
         else:
-            if 'partial' in t:
-                pts = partial_points(t, output)
             print(Fore.MAGENTA + "Output not as expected..." + Fore.RESET)
             print("\nOutput:")
             print("'" + output + "'")
-            print("\nExpected:")
-            print("'" + expected + "'")
+            if 'partial' in t:
+                pts = partial_points(t, output)
+            else:
+                print("\nExpected:")
+                print("'" + expected + "'")
+            if t['comparison'] == 'regex':
+                print(
+                    '(Refer to https://docs.python.org/3/library/re.html for regex matching of output. TL;DR: "\s+" and "\s*" denote spaces and "\+" denotes "+".)'
+                )
             # expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
             # print("\t\t" + expect_hex)
     print()
@@ -117,15 +145,16 @@ if __name__ == "__main__":
     current_datetime = datetime.now(pytz.timezone('US/Eastern'))
     github_sha = os.getenv("GITHUB_SHA")
     if github_sha:
-        commit_date = subprocess.check_output("git show -s --format=%cd --date=iso-strict {}".format(github_sha),
-                                               shell=True,
-                                               stderr=subprocess.STDOUT,
-                                               universal_newlines=True)
+        commit_date = subprocess.check_output(
+            "git show -s --format=%cd --date=iso-strict {}".format(github_sha),
+            shell=True,
+            stderr=subprocess.STDOUT,
+            universal_newlines=True)
         current_datetime = datetime.fromisoformat(commit_date.strip())
 
     tests = read_json()
     total_pts = 0.0
-    available_pts = 0.0 
+    available_pts = 0.0
     idx = 0
     for t in tests['tests']:
         total_pts += run_test(t, idx)
@@ -133,22 +162,23 @@ if __name__ == "__main__":
         idx += 1
     print()
     print("*" * shutil.get_terminal_size().columns)
-    
+
     if 'bonus' in tests:
         for b in tests['bonus']:
             d = datetime.fromisoformat(b['date'])
             p = float(b['points'])
-#             print("commit time: " +str(current_datetime) + ", bonus time: " + str(d))
+            #             print("commit time: " +str(current_datetime) + ", bonus time: " + str(d))
             if current_datetime < d:
                 total_pts += p
-                print("🎊 " + Fore.YELLOW + "Bonus Points: " + str(p) + Fore.RESET)
+                print("🎊 " + Fore.YELLOW + "Bonus Points: " + str(p) +
+                      Fore.RESET)
                 print()
                 break
-            
+
     points = "{:.2f}".format(total_pts) + "/" + "{:.2f}".format(available_pts)
     print(Back.CYAN + Fore.BLACK + "Total Points:\t" + points + Fore.RESET +
           Back.RESET)
-            
+
     with open('points', 'w') as f:
         f.write(points)
 
