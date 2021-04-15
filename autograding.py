@@ -10,9 +10,9 @@ import re
 import pytz
 from datetime import datetime
 from timeit import default_timer as timer
-from colorama import init, Fore, Back, Style
+from blessings import Terminal
 
-init()
+term = Terminal(force_styling=True)
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -63,11 +63,10 @@ def partial_points(t, output):
     for p in parts:
         if check_output_correctness(output, p, t['comparison'], True):
             pts += pts_per_part
-            expected += Back.GREEN + Fore.BLACK + p
+            expected += '\n'.join(term.black_on_green(x) for x in p.split('\n'))
         else:
-            expected += Back.RED + Fore.BLACK + p
-    print("\nExpected:")
-    print("'" + expected + "'" + Style.RESET_ALL)
+            expected += '\n'.join(term.black_on_red(x) for x in p.split('\n'))
+    print("\nExpected:\n" + expected)
     return pts
 
 
@@ -82,9 +81,9 @@ def run_test(t, idx):
                                                stderr=subprocess.STDOUT,
                                                universal_newlines=True)
     except subprocess.CalledProcessError as e:
-        print(Fore.RED + "❌ Fail" + Fore.RESET)
+        print(term.red("❌ Fail"))
         print()
-        print(Fore.MAGENTA + "Compilation error..." + Fore.RESET)
+        print(term.magenta("Compilation error..."))
         print(e.output)
         return 0.0
 
@@ -95,13 +94,13 @@ def run_test(t, idx):
 
     if check_output_correctness(output, expected,
                                 t['comparison']) and not errs:
-        print(Fore.GREEN + "✅ Pass" + Fore.RESET)
+        print(term.green("✅ Pass"))
         pts = float(t['points'])
     else:
-        print(Fore.RED + "❌ Fail" + Fore.RESET)
+        print(term.red("❌ Fail"))
         print()
         if 'case' in t:
-            print(Fore.CYAN + "Input:" + Fore.RESET)
+            print(term.cyan("Input:"))
             print(t['case'])
         print()
         if errs:
@@ -110,11 +109,9 @@ def run_test(t, idx):
             elif 'partial' in t:
                 pts = partial_points(t, output)
             pts /= 2
-            print(Fore.MAGENTA + "Error(s) during execution..." + Fore.RESET)
-            print("\nOutput:")
-            print("'" + output + "'")
-            print("\nExpected:")
-            print("'" + expected + "'")
+            print(term.magenta("Error(s) during execution..."))
+            print("\nOutput:\n" + output)
+            print("\nExpected:\n" + expected)
             if t['comparison'] == 'regex':
                 print(
                     '(Refer to https://docs.python.org/3/library/re.html for regex matching of output. TL;DR: "\s+" and "\s*" denote spaces and "\+" denotes "+".)'
@@ -122,14 +119,12 @@ def run_test(t, idx):
             print("\nError(s):")
             print(errs)
         else:
-            print(Fore.MAGENTA + "Output not as expected..." + Fore.RESET)
-            print("\nOutput:")
-            print("'" + output + "'")
+            print(term.magenta("Output not as expected..."))
+            print("\nOutput:\n" + output)
             if 'partial' in t:
                 pts = partial_points(t, output)
             else:
-                print("\nExpected:")
-                print("'" + expected + "'")
+                print("\nExpected:\n" + expected)
             if t['comparison'] == 'regex':
                 print(
                     '(Refer to https://docs.python.org/3/library/re.html for regex matching of output. TL;DR: "\s+" and "\s*" denote spaces and "\+" denotes "+".)'
@@ -137,7 +132,7 @@ def run_test(t, idx):
             # expect_hex = ':'.join("{:02x}".format(ord(c)) for c in expected)
             # print("\t\t" + expect_hex)
     print()
-    print("🎯 " + Fore.YELLOW + "Points: " + "{:.2f}".format(pts) + Fore.RESET)
+    print(term.yellow("🎯 Points: {:.2f}".format(pts)))
     return pts
 
 
@@ -170,14 +165,12 @@ if __name__ == "__main__":
             #             print("commit time: " +str(current_datetime) + ", bonus time: " + str(d))
             if current_datetime < d:
                 total_pts += p
-                print("🎊 " + Fore.YELLOW + "Bonus Points: " + str(p) +
-                      Fore.RESET)
+                print(term.yellow("🎊 Bonus Points: " + str(p)))
                 print()
                 break
 
     points = "{:.2f}".format(total_pts) + "/" + "{:.2f}".format(available_pts)
-    print(Back.CYAN + Fore.BLACK + "Total Points:\t" + points + Fore.RESET +
-          Back.RESET)
+    print(term.black_on_cyan("Total Points:\t" + points))
 
     with open('points', 'w') as f:
         f.write(points)
