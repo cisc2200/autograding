@@ -66,8 +66,8 @@ def partial_points(t, output):
             expected += '\n'.join(term.black_on_green(x) for x in p.split('\n'))
         else:
             expected += '\n'.join(term.black_on_red(x) for x in p.split('\n'))
-    print("\nExpected:\n" + expected)
-    return pts
+    # print("\nExpected:\n" + expected)
+    return pts, expected
 
 
 def run_test(t, idx):
@@ -107,7 +107,7 @@ def run_test(t, idx):
             if check_output_correctness(output, expected, t['comparison']):
                 pts = float(t['points'])
             elif 'partial' in t:
-                pts = partial_points(t, output)
+                pts, expected = partial_points(t, output)
             pts /= 2
             print(term.magenta("Error(s) during execution..."))
             print("\nOutput:\n" + output)
@@ -122,9 +122,8 @@ def run_test(t, idx):
             print(term.magenta("Output not as expected..."))
             print("\nOutput:\n" + output)
             if 'partial' in t:
-                pts = partial_points(t, output)
-            else:
-                print("\nExpected:\n" + expected)
+                pts, expected = partial_points(t, output)
+            print("\nExpected:\n" + expected)
             if t['comparison'] == 'regex':
                 print(
                     '(Refer to https://docs.python.org/3/library/re.html for regex matching of output. TL;DR: "\s+" and "\s*" denote spaces and "\+" denotes "+".)'
