@@ -139,12 +139,15 @@ if __name__ == "__main__":
     current_datetime = datetime.now(pytz.timezone('US/Eastern'))
     github_sha = os.getenv("GITHUB_SHA")
     if github_sha:
-        commit_date = subprocess.check_output(
-            "git show -s --format=%cd --date=iso-strict {}".format(github_sha),
-            shell=True,
-            stderr=subprocess.STDOUT,
-            universal_newlines=True)
-        current_datetime = datetime.fromisoformat(commit_date.strip())
+        try:
+            commit_date = subprocess.check_output(
+                "git show -s --format=%cd --date=iso-strict {}".format(github_sha),
+                shell=True,
+                stderr=subprocess.STDOUT,
+                universal_newlines=True)
+            current_datetime = datetime.fromisoformat(commit_date.strip())
+        except:
+            pass
 
     tests = read_json()
     total_pts = 0.0
