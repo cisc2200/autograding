@@ -145,9 +145,9 @@ if __name__ == "__main__":
                 shell=True,
                 stderr=subprocess.STDOUT,
                 universal_newlines=True)
+            print(term.blue("Commit date: " + commit_date))
             current_datetime = datetime.fromisoformat(commit_date.strip())
         except:
-            print("GET_DATE_ERROR: " + commit_date)
             pass
 
     tests = read_json()
