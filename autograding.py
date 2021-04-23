@@ -145,8 +145,9 @@ if __name__ == "__main__":
                 shell=True,
                 stderr=subprocess.STDOUT,
                 universal_newlines=True)
+            commit_date = commit_date.strip()
             print(term.blue("Commit timestamp: " + commit_date + " @" + github_sha))
-            current_datetime = datetime.fromisoformat(commit_date.strip())
+            current_datetime = datetime.fromisoformat(commit_date)
         except subprocess.CalledProcessError as e:
             print(term.blue("Get commit timestamp error: \"" + e.output + "\". Using current date and time."))
 
