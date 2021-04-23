@@ -1,6 +1,6 @@
 name: "Autograding"
 description: "Autograding for GitHub Classroom"
-author: "@zhhailon"
+author: "@cisc2200"
 inputs:
   token:
     default: ${{ github.token }}
