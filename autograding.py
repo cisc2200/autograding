@@ -145,10 +145,10 @@ if __name__ == "__main__":
                 shell=True,
                 stderr=subprocess.STDOUT,
                 universal_newlines=True)
+            print(term.blue("Commit timestamp: " + commit_date + " @" + github_sha))
             current_datetime = datetime.fromisoformat(commit_date.strip())
         except subprocess.CalledProcessError as e:
-            print(term.blue("Get commit timestamp error: " + e.output))
-            print(term.blue("Using the current date and time."))
+            print(term.blue("Get commit timestamp error: \"" + e.output + "\". Using current date and time."))
 
     tests = read_json()
     total_pts = 0.0
