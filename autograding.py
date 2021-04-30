@@ -110,7 +110,7 @@ def run_test(t, idx):
                 pts, expected = partial_points(t, output)
             pts /= 2
             print(term.magenta("Error(s) during execution..."))
-            print("\nOutput:\n" + output)
+            print("\nYour output:\n" + output)
             print("\nExpected:\n" + expected)
             if t['comparison'] == 'regex':
                 print(
@@ -120,7 +120,7 @@ def run_test(t, idx):
             print(errs)
         else:
             print(term.magenta("Output not as expected..."))
-            print("\nOutput:\n" + output)
+            print("\nYour output:\n" + output)
             if 'partial' in t:
                 pts, expected = partial_points(t, output)
             print("\nExpected:\n" + expected)
